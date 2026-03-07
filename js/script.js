@@ -13,12 +13,22 @@ const bubbleMargin = { top: 50, right: 30, bottom: 50, left: 60 };
 const bubbleWidth  = 850 - bubbleMargin.left - bubbleMargin.right;
 const bubbleHeight = 600 - bubbleMargin.top  - bubbleMargin.bottom;
 
-const bubbleSvg = d3.select('#bubble-vis')
-    .append('svg')
+const bubbleContainer = d3.select('#bubble-vis');
+const bubbleSvgEl = bubbleContainer.append('svg')
     .attr('width',  bubbleWidth  + bubbleMargin.left + bubbleMargin.right)
     .attr('height', bubbleHeight + bubbleMargin.top  + bubbleMargin.bottom)
-    .append('g')
+
+const zoomGroup = bubbleSvgEl.append('g').attr('class', 'zoom-group');
+const bubbleSvg = zoomGroup.append('g')
     .attr('transform', `translate(${bubbleMargin.left},${bubbleMargin.top})`);
+
+const zoom = d3.zoom()
+    .scaleExtent([0.5, 5])
+    .on('zoom', (event) => {
+        zoomGroup.attr('transform', event.transform);
+    });
+
+bubbleSvgEl.call(zoom).on('dblclick.zoom', null);
 
 const bxAxisG = bubbleSvg.append('g')
     .attr('class', 'axis')
@@ -67,7 +77,8 @@ function showBubbleView() {
     selectedCompany = null;
     selectedGroup   = null;
 
-    // reset bubbles
+    bubbleSvgEl.transition().duration(300).call(zoom.transform, d3.zoomIdentity);
+
     bubbleSvg.selectAll('.bubble')
         .transition().duration(t)
         .style('opacity', 0.75)

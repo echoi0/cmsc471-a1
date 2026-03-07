@@ -57,7 +57,7 @@ button {
 
 #vis svg {
     margin: 2rem 0;
-    border: 1px solid #ccc; /*otherwise you can't see this part*/
+    border: 1px solid #ccc; 
 }
 
 .pill:hover {
@@ -84,12 +84,16 @@ button {
     font-weight: bold;
 }
 
+.zoom-hint {
+    text-align: center;
+}
+
 #tooltip {
-    position: absolute; /* So we can move it with the cursor */
+    position: absolute;
     padding: 10px;
     background: white;
     border: 1px solid #ddd;
     border-radius: 4px;
-    pointer-events: none; /* Prevent tooltip from interfering with mouse events */
+    pointer-events: none;
     font-size: 12px;
 }

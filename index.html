@@ -18,7 +18,9 @@
                 <span id="back-label" style="margin-left: 12px; font-size: 10px; color: white;"></span>
             </div>
 
-            <div id="bubble-vis"></div>
+            <div id="bubble-vis">
+                <p class="zoom-hint" style="font-size: 12px; color: #666; margin-bottom: 8px;">Scroll to zoom, drag to pan</p>
+            </div>
             <div id="bar-view" style="display:none;">
                 <div id="group-pills"></div>
                 <div id="bar-vis"></div>
@@ -27,11 +29,45 @@
         </div>
 
         <div id="tooltip" style="display:none"></div>
+
+        <hr style="margin: 40px 0;">
+        <section id="writeup" style="max-width: 800px; margin: 0 auto; font-size: 15px; line-height: 1.7;">
+            <h2>Write-up</h2>
+
+            <h3>Introduction</h3>
+            <p>This visualization looks at K-pop entertainment companies and the social media presence of their artists. The dataset comes from May 2023 and includes information about K-pop idols such as their stage names, groups, companies, Instagram follower counts, countries of origin, ages, and debut dates.</p>
+            <p>The visualization focuses on two main questions. First, how do different companies compare in terms of how many artists they have and the total number of followers those artists bring in? Second, within a specific company, how do individual group members compare in popularity?</p>
+            <p>To explore these questions, the visualization uses a two-step drill-down approach. The first view is a bubble chart showing the companies overall. From there, users can select a company and see a bar chart that compares the followers of individual group members within that company.</p>
+
+            <h3>Design Rationale & Implemented Interactions</h3>
+            <p>For the overview, we used a bubble chart because it allows us to represent multiple variables at the same time. The x-axis shows the number of members a company has, the y-axis shows the total number of followers, and the size of each bubble represents company size. This makes it easy to compare companies at a glance. Each company is also given a different color so they are easier to distinguish.</p>
+            <p>For the drill-down view, we used a bar chart to show follower counts for individual members. Each bar represents a member, and the bars are colored by the member's country of origin. This helps reveal how geographically diverse different groups are.</p>
+            <p>We also implemented several interactive features:</p>
+            <p><strong>Category I — Connection / Filtering</strong></p>
+            <ul>
+                <li><strong>Dynamic filters:</strong> Group "pills" act as filters that allow users to view members from a selected group.</li>
+                <li><strong>Linking:</strong> Clicking on a company bubble updates the bar chart to show groups that belong to that company.</li>
+            </ul>
+            <p><strong>Category II — Exploration</strong></p>
+            <ul>
+                <li><strong>Zooming and panning:</strong> Users can scroll to zoom (from 0.5× to 5×) and drag to pan around the bubble chart.</li>
+                <li><strong>Details on demand:</strong> Hovering over bubbles or bars shows tooltips with additional information about the company or member.</li>
+                <li><strong>Highlighting:</strong> When users hover over bubbles or bars, a border appears to highlight them. Selected group pills are also visually highlighted.</li>
+            </ul>
+            <p>We also considered adding a slider to filter companies by follower count. However, we decided that zooming and panning made it easier to explore the dense areas of the chart. We also kept the drill-down structure (bubble chart → group pills → bar chart) so that users aren't overwhelmed with too much information at once.</p>
+
+            <h3>References</h3>
+            <ul>
+                <li><strong>Data:</strong> K-pop Idol Followers dataset — <a href="https://www.kaggle.com/datasets/faisalamir/kpop-idol-followers" target="_blank" rel="noopener">Kaggle (faisalamir/kpop-idol-followers)</a></li>
+                <li><strong>Libraries:</strong> <a href="https://d3js.org/" target="_blank" rel="noopener">D3.js v7</a>, <a href="https://getbootstrap.com/" target="_blank" rel="noopener">Bootstrap 5</a></li>
+            </ul>
+
+            <h3>Development Process</h3>
+            <p>Eli did most of the implementation work, including linking, dynamic filtering, details on demand, and highlighting. Abubakr added the zooming and panning feature and wrote the write-up. In total, the project took Eli about 4-5 hours and Abubakr about 2 hours (6 people-hours overall).</p>
+            <p>The dynamic bar chart was probably the most challenging part because it had to update every time a different group was selected. That meant we had to re-render the chart each time, which required understanding D3’s enter/update/exit pattern, recalculating the scales and axes for the new data, and making sure the transitions still worked smoothly. The zooming and panning feature also took some extra work since it wasn’t something we covered in class, it requiered extra research to learn how d3.zoom works, restructure the SVG so everything sits inside a zoom group, and make sure the zoom behavior didn’t mess with the ability to click on the bubbles.</p>        </section>
     </div>
 
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://d3js.org/d3.v7.js"></script>
-    <script src="https://unpkg.com/d3-simple-slider"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
